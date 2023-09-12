@@ -113,13 +113,13 @@ class SearchDialog(QDialog):
         layout.addWidget(self.student_name)
 
         button = QPushButton("Search")
-        button.clicked(self.search_student)
+        button.clicked.connect(self.search_student)
         layout.addWidget(button)
 
         self.setLayout(layout)
 
     def search_student(self):
-        name = self.student_name
+        name = self.student_name.text()
         connection = sqlite3.connect("database.db")
         cursor = connection.cursor()
         result = cursor.execute("SELECT * FROM students WHERE name = ?", (name,))
