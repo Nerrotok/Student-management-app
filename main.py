@@ -1,3 +1,4 @@
+from PyQt6.QtCore import Qt
 import sys
 from datetime import datetime
 from PyQt6.QtWidgets import QApplication, QVBoxLayout, QLabel, QWidget, QGridLayout, \
@@ -95,7 +96,7 @@ class InsertDialog(QDialog):
         connection.commit()
         cursor.close()
         connection.close()
-        student_management_system.load_data()
+        student_management_window.load_data()
 
 class SearchDialog(QDialog):
     def __init__(self):
@@ -111,16 +112,29 @@ class SearchDialog(QDialog):
         layout.addWidget(self.student_name)
 
         button = QPushButton("Search")
-        # button activiation
+        button.clicked(self.search_student())
         layout.addWidget(button)
 
         self.setLayout(layout)
 
     def search_student(self):
-        pass
+        name = self.student_name
+        connection = sqlite3.connect("database.db")
+        cursor = connection.cursor()
+        result = cursor.execute("SELECT * FROM students WHERE name = ?", (name,))
+        rows = list(result)
+        print(rows)
+        items = student_management_window.table.findItems(name, Qt.MatchFlag.MatchFixedString)
+        for item in items:
+            print(item)
+            student_management_window.table.item(item.row(), 1).setSelected(True)
+
+        cursor.close()
+        connection.close()
+
 
 app = QApplication(sys.argv)
-student_management_system = MainWindow()
-student_management_system.show()
-student_management_system.load_data()
+student_management_window = MainWindow()
+student_management_window.show()
+student_management_window.load_data()
 sys.exit(app.exec())
