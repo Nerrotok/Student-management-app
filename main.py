@@ -25,8 +25,8 @@ class MainWindow(QMainWindow):
         help_menu_item.addAction(about_action)
 
         search_action = QAction("Search", self)
-        search_action.triggered.connect(self.search)
         edit_menu_item.addAction(search_action)
+        search_action.triggered.connect(self.search)
 
         self.table = QTableWidget()
         self.table.setColumnCount(4)
@@ -96,7 +96,8 @@ class InsertDialog(QDialog):
         connection.commit()
         cursor.close()
         connection.close()
-        student_management_window.load_data()
+        main_window.load_data()
+
 
 class SearchDialog(QDialog):
     def __init__(self):
@@ -112,7 +113,7 @@ class SearchDialog(QDialog):
         layout.addWidget(self.student_name)
 
         button = QPushButton("Search")
-        button.clicked(self.search_student())
+        button.clicked(self.search_student)
         layout.addWidget(button)
 
         self.setLayout(layout)
@@ -124,17 +125,17 @@ class SearchDialog(QDialog):
         result = cursor.execute("SELECT * FROM students WHERE name = ?", (name,))
         rows = list(result)
         print(rows)
-        items = student_management_window.table.findItems(name, Qt.MatchFlag.MatchFixedString)
+        items = main_window.table.findItems(name, Qt.MatchFlag.MatchFixedString)
         for item in items:
             print(item)
-            student_management_window.table.item(item.row(), 1).setSelected(True)
+            main_window.table.item(item.row(), 1).setSelected(True)
 
         cursor.close()
         connection.close()
 
 
 app = QApplication(sys.argv)
-student_management_window = MainWindow()
-student_management_window.show()
-student_management_window.load_data()
+main_window = MainWindow()
+main_window.show()
+main_window.load_data()
 sys.exit(app.exec())
