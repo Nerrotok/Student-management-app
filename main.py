@@ -1,7 +1,6 @@
 from PyQt6.QtCore import Qt
 import sys
-from datetime import datetime
-from PyQt6.QtWidgets import QApplication, QVBoxLayout, QLabel, QWidget, QGridLayout, \
+from PyQt6.QtWidgets import QApplication, QVBoxLayout, QLabel, QGridLayout, \
     QLineEdit, QPushButton, QMainWindow, QTableWidget, QTableWidgetItem, QDialog, QComboBox, \
     QToolBar, QStatusBar, QMessageBox
 
@@ -16,6 +15,7 @@ class DatabaseConnection:
     def connect(self):
         connection = sqlite3.connect(self.database_file)
         return connection
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -105,6 +105,7 @@ class MainWindow(QMainWindow):
         dialog = AboutDialog()
         dialog.exec()
 
+
 class AboutDialog(QMessageBox):
     def __init__(self):
         super().__init__()
@@ -114,6 +115,7 @@ class AboutDialog(QMessageBox):
         Feel free to modify and reuse this app.
         """
         self.setText(content)
+
 
 class EditDialog(QDialog):
     def __init__(self):
@@ -208,7 +210,6 @@ class DeleteDialog(QDialog):
         confirmation_widget.setWindowTitle("Success")
         confirmation_widget.setText("The record was deleted successfully!")
         confirmation_widget.exec()
-
 
 
 class InsertDialog(QDialog):
